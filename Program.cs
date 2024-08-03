@@ -33,3 +33,18 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
+
+
+/*
+CREATE,READ,UPDATE,DELETE (CRUD)
+
+dotnet aspnet-codegenerator razorpage -m Razorpage.models.Article -dc Razorpage.models.MyBlogContext ourDir Pages/Blog -udl --referenceScriptLibraries
+
+dotnet tool install -g dotnet-aspnet-codegenerator dùng lệnh này trc nếu lệnh trên chạy k đc
+
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.VisualStudio.Web.CodeGenerators.Mvc
+
+*/
