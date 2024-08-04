@@ -14,6 +14,7 @@ var mailSetting  = builder.Configuration.GetSection("MailSettings");
 builder.Services.Configure<MailSettings>(mailSetting);
 builder.Services.AddSingleton<IEmailSender, SendMailService>();
 
+
 builder.Services.AddDbContext<MyBlogContext>(options =>{
     // string? connectString=builder.Configuration.GetConnectionString("MyBlogContext");
     // options.UseSqlServer(connectString);
@@ -52,6 +53,13 @@ builder.Services.Configure<IdentityOptions> (options => {
     // Cấu hình đăng nhập.
     options.SignIn.RequireConfirmedEmail = true;            // Cấu hình xác thực địa chỉ email (email phải tồn tại)
     options.SignIn.RequireConfirmedPhoneNumber = false;     // Xác thực số điện thoại
+    options.SignIn.RequireConfirmedAccount = true;         // Người dùng phải xác nhận tài khoản
+});
+
+builder.Services.ConfigureApplicationCookie(options =>{
+    options.LoginPath = "/login/";
+    options.LogoutPath= "/logout/";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied"; //đường dẫn tới trang khi user bị cấm truy cập
 });
 
 
