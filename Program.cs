@@ -120,3 +120,19 @@ Nếu muốn xài đăng nhập thì add những package sau:
 phát sinh code cho identity
 dotnet aspnet-codegenerator identity -dc Razorpage.models.MyBlogContext
 */
+
+
+/*
+Model:
+-   Có thể mở rộng các lớp như IdentityUser, IdentityRole, IdentityUserRole<TKey> , ...
+
+-   Mở rộng lớp IdentityDbContext để sử dụng lớp tùy chỉnh EX: AppRole,AppUser,AppUserRole,...
+Cấu hình DbContext để sử dụng các lớp tùy chỉnh và chỉ định cấu trúc bảng trong OnModelCreating.
+public class tencontext : IdentityDbContext<AppUser,AppRole, Tkey, IdentityUserClaim<Tkey>, AppUserRole ,
+IdentityUserLogin<Tkey> IdentityRoleClaim<Tkey>, IdentityUserToken<Tkey>>
+
+-    Đăng ký Identity
+EX: builder.Services.AddIdentity<Tên mở rộng của IdentityUser, Tên mở rộng của IdentityRole()>()
+                    .AddEntityFrameworkStores<tencontext>()
+                    .AddDefaultTokenProviders();
+*/
