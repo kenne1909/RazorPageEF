@@ -24,10 +24,15 @@ namespace CS048_RazorPage8_EF.Areas.Identity.Pages.Account
             _logger = logger;
         }
 
+        public void OnGet()
+        {
+            // _signInManager.IsSignedIn(User)
+        }
+
         public async Task<IActionResult> OnPost(string returnUrl = null)
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("User logged out.");
+            _logger.LogInformation("Đăng xuất thành công");
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
@@ -36,7 +41,12 @@ namespace CS048_RazorPage8_EF.Areas.Identity.Pages.Account
             {
                 // This needs to be a redirect so that the browser performs a new
                 // request and the identity for the user gets updated.
-                return RedirectToPage();
+
+                returnUrl = Url.Content("~/");
+                
+                return LocalRedirect(returnUrl);
+
+                // return RedirectToPage();
             }
         }
     }
