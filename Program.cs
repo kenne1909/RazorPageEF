@@ -62,6 +62,33 @@ builder.Services.ConfigureApplicationCookie(options =>{
     options.AccessDeniedPath = "/Identity/Account/AccessDenied"; //đường dẫn tới trang khi user bị cấm truy cập
 });
 
+builder.Services.AddAuthentication()
+                .AddGoogle(options =>{
+                    IConfigurationSection? gconfi = builder.Configuration.GetSection("Authentication:Google");
+
+                    string clientId = gconfi["ClientId"] ?? throw new InvalidOperationException("Google ClientId chưa được định cấu hình.");
+                    string clientSecret = gconfi["ClientSecret"] ?? throw new InvalidOperationException("Google ClientSecret chưa được định cấu hình.");
+                    
+                    options.ClientId =clientId;
+                    options.ClientSecret = clientSecret;
+                    // https://localhost:7134/signin-google nếu k thiết lập CallbackPath 
+                    options.CallbackPath = "/dang-nhap-tu-google";
+                })
+                .AddFacebook(options => {
+                    IConfigurationSection? gconfi = builder.Configuration.GetSection("Authentication:Facebook");
+                    string appId = gconfi["AppId"] ?? throw new InvalidOperationException("Facebook AppId chưa được định cấu hình.");
+                    string appSecret = gconfi["AppSecret"] ?? throw new InvalidOperationException("Facebook AppSecret chưa được định cấu hình.");
+
+                    options.AppId =appId;
+                    options.AppSecret = appSecret;
+                    // https://localhost:7134/signin-google nếu k thiết lập CallbackPath 
+                    options.CallbackPath = "/dang-nhap-tu-facebook";
+                })
+                // .AddFacebook()
+                // .AddTwitter()
+                // .AddMicrosoftAccount()
+                ;
+
 
 var app = builder.Build();
 
@@ -143,4 +170,9 @@ IdentityUserLogin<Tkey> IdentityRoleClaim<Tkey>, IdentityUserToken<Tkey>>
 EX: builder.Services.AddIdentity<Tên mở rộng của IdentityUser, Tên mở rộng của IdentityRole()>()
                     .AddEntityFrameworkStores<tencontext>()
                     .AddDefaultTokenProviders();
+
+
+
+CallbackPath: google sẽ  gửi mã token đến địa chỉ này
+https://localhost:7134/dang-nhap-tu-google
 */
