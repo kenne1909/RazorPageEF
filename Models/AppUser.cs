@@ -9,5 +9,7 @@ namespace Razorpage.models
         [Column(TypeName ="nvarchar")]
         [StringLength(400)]
         public string? HomeAdress{set;get;}
+        [DataType(DataType.Date)]
+        public DateTime? BirthDate{set;get;}
     }
 }
