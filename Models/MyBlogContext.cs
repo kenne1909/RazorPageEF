@@ -8,6 +8,7 @@ namespace Razorpage.models
         public MyBlogContext(DbContextOptions<MyBlogContext> options) : base(options)
         {
             //..
+            // this.Roles - mỗi dòng trong bảng role tương ứng với kiểu IdentityRole
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

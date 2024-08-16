@@ -1,4 +1,5 @@
 using System.Configuration;
+using App.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +90,8 @@ builder.Services.AddAuthentication()
                 // .AddMicrosoftAccount()
                 ;
 
+builder.Services.AddSingleton<IdentityErrorDescriber,AppIdentityErrorDescriber>();
+
 
 var app = builder.Build();
 
@@ -130,6 +133,15 @@ dotnet add package Microsoft.VisualStudio.Web.CodeGenerators.Mvc
 Thư viện Identity: 
     -Authentication: xác định danh tính -> Liên quan đến login, logout, ...
     -Authortization: xác thực quyền truy cập
+        Role-based authorization -> hổ trợ xác thực quyền theo vai trò
+        Role(vai trò): admin,editor,manager,member,...
+        tạo trang:  /Areas/Admin/Pages/Role
+            Index: quản lí danh sách hiển thị các role
+            create,edit,delete
+        dotnet new page --name Index --output Areas/Admin/Pages/Role --namespace App.Admin.Role
+
+
+
     -Quản lý user: Sign up, User, Role, ...
 
 
@@ -170,6 +182,10 @@ IdentityUserLogin<Tkey> IdentityRoleClaim<Tkey>, IdentityUserToken<Tkey>>
 EX: builder.Services.AddIdentity<Tên mở rộng của IdentityUser, Tên mở rộng của IdentityRole()>()
                     .AddEntityFrameworkStores<tencontext>()
                     .AddDefaultTokenProviders();
+
+
+-   Muốn xác thực quyền truy cập:   [Authorize] -Controller,Action,PageModel(k thiết lập halder) -> user phải đăng nhập
+
 
 
 
