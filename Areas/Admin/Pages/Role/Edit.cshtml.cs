@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Razorpage.models;
 
 namespace App.Admin.Role
 {
-    [Authorize(Roles ="Admin")]
+    //policy : Tạo ra các policy -> kiểm tra quyền truy cập user vào các page,controller, action,...
+    //Policy: AllowEditRole
+    [Authorize(Policy ="AllowEditRole")]   
     public class EditModel : RolePageModel         //PageModel
     {
         public EditModel(RoleManager<IdentityRole> roleManager, MyBlogContext myBlogContext) : base(roleManager, myBlogContext)
@@ -26,6 +29,7 @@ namespace App.Admin.Role
 
         [BindProperty]
         public InputModel? Input{set;get;}
+        public List<IdentityRoleClaim<string>>? Claims{set;get;}
         public IdentityRole? role{set;get;}
 
         public async Task<IActionResult> OnGet(string roleid)
@@ -43,6 +47,7 @@ namespace App.Admin.Role
                     {
                         Name=role.Name
                     };
+                    Claims = await _context.RoleClaims.Where(rc=>rc.RoleId ==role.Id).ToListAsync();
                     return Page();
                 }
             }
@@ -63,6 +68,7 @@ namespace App.Admin.Role
                 }
                 else
                 {
+                    Claims=await _context.RoleClaims.Where(rc=>rc.RoleId ==role.Id).ToListAsync();
                     if (!ModelState.IsValid)//nếu dữ liệu k phù hợp vs validation
                     {
                         return Page();

@@ -1,4 +1,5 @@
 using System.Configuration;
+using System.Security.Claims;
 using App.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -91,6 +92,32 @@ builder.Services.AddAuthentication()
                 ;
 
 builder.Services.AddSingleton<IdentityErrorDescriber,AppIdentityErrorDescriber>();
+
+builder.Services.AddAuthorization(options => {
+    // options.AddPolicy("Tenpolicy", policyBuilder =>{
+    //     //Dieu kien cua policy
+    // });
+    options.AddPolicy("AllowEditRole", policyBuilder =>{
+        //Dieu kien cua policy
+        policyBuilder.RequireAuthenticatedUser();//userphari dang nhapj
+        // policyBuilder.RequireRole("Admin");
+        // policyBuilder.RequireRole("Editor");
+
+        policyBuilder.RequireClaim("canedit","user","post");
+        
+        //Claims-based authorization
+        // policyBuilder.RequireClaim("ten Claim","giatri1","giatri2");
+        // policyBuilder.RequireClaim("ten Claim",new string[]
+        // {
+        //     "giatri1",
+        //     "giatri2"
+        // });
+
+        // IdentityRoleClaim<string> claim1;
+        // IdentityUserClaim<string> claim2;
+        // Claim claim;
+    });
+});
 
 
 var app = builder.Build();
@@ -185,7 +212,16 @@ EX: builder.Services.AddIdentity<Tên mở rộng của IdentityUser, Tên mở 
 
 
 -   Muốn xác thực quyền truy cập:   [Authorize] -Controller,Action,PageModel(k thiết lập halder) -> user phải đăng nhập
+-   Policy-based authorization(q truy cập theo chính sách)
+-   Claims-based authorization(q truy cập theo đặc tính, tính chất của user)
+    -> Claims: đặt tính, tính chất của 1 đối tượng(User)
 
+    Bằng lái B2(Role) ->đc lái xe 4 chổ
+    -ngày sinh  -> claim
+    -nơi sinh   -> claim
+
+    Mua rươu(trên 18t): đưa bằng lái để xác định(kiểm tra tính chất của ng mua rượu)
+    - Kiểm tra ngày sinh: Claims-based authorization
 
 
 
