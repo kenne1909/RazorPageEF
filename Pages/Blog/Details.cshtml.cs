@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Razorpage.models;
 
 namespace CS048_RazorPage8_EF.Pages_Blog
 {
+    [Authorize(Policy ="InGenZ")]// năm sinh 1997-2012 được phép truy cập
     public class DetailsModel : PageModel
     {
         private readonly Razorpage.models.MyBlogContext _context;

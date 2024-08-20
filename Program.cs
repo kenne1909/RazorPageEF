@@ -1,6 +1,8 @@
 using System.Configuration;
 using System.Security.Claims;
+using App.Security.Requirements;
 using App.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -117,8 +119,25 @@ builder.Services.AddAuthorization(options => {
         // IdentityUserClaim<string> claim2;
         // Claim claim;
     });
+    options.AddPolicy("InGenZ", policyBuilder =>{
+        policyBuilder.RequireAuthenticatedUser();
+        //policyBuilder.RequireClaim("canedit","user","post");
+        policyBuilder.Requirements.Add(new GenZRequirement());//GenZRequirement
+        //new GenZRequirement() -> tìm trên hệ thống dịch vụ chuyên xử lý đối tượng về GenZRequirement để kiểm tra user ->Authorization Handler
+    });
+
+
+    options.AddPolicy("ShowAdminMenu", policyBuilder =>{
+        policyBuilder.RequireRole("Admin");
+    });
+
+    options.AddPolicy("CanUpdateArticle", policyBuilder =>{
+        policyBuilder.Requirements.Add(new ArticleUpdateRequirement());
+    });
 });
 
+builder.Services.AddTransient<IAuthorizationHandler,AppAuthorizationhadler>();//IAuthorizationHandler phải đăng kí kiểu AddTransient
+//để tạo ra mỗi handler ms cho mỗi truy vấn
 
 var app = builder.Build();
 
